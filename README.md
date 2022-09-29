@@ -121,6 +121,7 @@ namespace ChatCommands.Commands
 
 For more example you can check other commands.
 
+If you want to contribute you can, if you want me to implement a command, please open up an issue.
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
