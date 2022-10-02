@@ -7,8 +7,9 @@ using System.Threading;
 using TaleWorlds.MountAndBlade.DedicatedCustomServer;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.Core;
+using TaleWorlds.Library;
 
-namespace ChatCommands.AdminPanel
+namespace ChatCommands
 {
     public struct MissionData
     {
@@ -27,7 +28,10 @@ namespace ChatCommands.AdminPanel
         {
             // Give us some buffer between the OnMissionEnd event and starting the next mission
             Thread.Sleep(500);
+
+            // Prevent infinite loop if for some reason a call to StartMission 
             AdminPanel.Instance.StartMissionOnly((MissionData)missionData);
+
         }
     }
 
@@ -48,7 +52,7 @@ namespace ChatCommands.AdminPanel
         public void OnEndMission()
         {
             // Run a thread that will create a start a mission after a delay
-            Thread t = new Thread(new ParameterizedThreadStart(ChangeMapThread.ThreadProc));
+            Thread t = new Thread(new ParameterizedThreadStart(StartMissionThread.ThreadProc));
             t.Start(missionData);
 
             Mission.Current.RemoveListener(this);
@@ -112,7 +116,7 @@ namespace ChatCommands.AdminPanel
             return toReturn;
         }
 
-        MissionData getStateOfMultiplayerOptions()
+        MissionData getMultiplayerOptionsState()
         {
             MissionData toReturn;
 
@@ -126,13 +130,27 @@ namespace ChatCommands.AdminPanel
             return toReturn;
         }
 
-        List<string> FindMaps(string searchString)
+        List<string> GetMapsForCurrentGameType()
         {
-            List<string> availableMaps = MultiplayerOptions.Instance.GetMultiplayerOptionsList(MultiplayerOptions.OptionType.Map);
-            return availableMaps.Where(str => str.Contains(searchString)).ToList();
+            return MultiplayerOptions.Instance.GetMultiplayerOptionsList(MultiplayerOptions.OptionType.Map);
         }
 
-        Tuple<bool,string> FindSingleMap(string searchString)
+        List<string> GetMapsInPool()
+        {
+            return MultiplayerIntermissionVotingManager.Instance.MapVoteItems.Select(kvp => kvp.Key).ToList();
+        }
+
+        public List<string> GetAllAvailableMaps()
+        {
+            return GetMapsForCurrentGameType().Union(GetMapsInPool()).ToList();
+        }
+
+        List<string> FindMaps(string searchString)
+        {
+            return GetAllAvailableMaps().Where(str => str.Contains(searchString)).ToList();
+        }
+
+        public Tuple<bool,string> FindSingleMap(string searchString)
         {
             List<string> foundMaps = FindMaps(searchString);
 
@@ -140,7 +158,7 @@ namespace ChatCommands.AdminPanel
             {
                 return new Tuple<bool, string>(true, foundMaps[0]);
             }
-            else if (foundMaps.Count > 2)
+            else if (foundMaps.Count > 1)
             {
                 // Check for special case where the name of a map sits inside the name of another map ie mp_tdm_map_001 or mp_tdm_map_001_spring
                 foreach (string mapName in foundMaps)
@@ -159,20 +177,11 @@ namespace ChatCommands.AdminPanel
             }
         }
 
-        public bool ChangeMap(string searchString)
+        public void ChangeMap(string mapId)
         {
-            Tuple<bool, string> searchResults = FindSingleMap(searchString);
-
-            // Map was found, changing map
-            if(searchResults.Item1)
-            {
-                MissionData currentState = getStateOfMultiplayerOptions();
-                currentState.mapId = searchResults.Item2;
-                StartMission(currentState);
-                return true;
-            }
-
-            return false;
+            MissionData currentState = getMultiplayerOptionsState();
+            currentState.mapId = mapId;
+            StartMission(currentState);
         }
 
         public void SetMultiplayerOptions(MissionData missionData, MultiplayerOptions.MultiplayerOptionsAccessMode opetionSet = MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions)
@@ -184,8 +193,6 @@ namespace ChatCommands.AdminPanel
             MultiplayerIntermissionVotingManager.Instance.IsCultureVoteEnabled = missionData.cultureVote;
             MultiplayerIntermissionVotingManager.Instance.IsMapVoteEnabled = missionData.mapVote;
         }
-
-
 
         public void StartMission(MissionData missionData)
         {

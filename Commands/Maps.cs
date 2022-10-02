@@ -35,7 +35,7 @@ namespace ChatCommands.Commands
 
         public bool Execute(NetworkCommunicator networkPeer, string[] args)
         {
-            List<string> availableMaps = MultiplayerOptions.Instance.GetMultiplayerOptionsList(MultiplayerOptions.OptionType.Map);
+            List<string> availableMaps = AdminPanel.Instance.GetAllAvailableMaps();
 
             GameNetwork.BeginModuleEventAsServer(networkPeer);
             GameNetwork.WriteMessage(new ServerMessage("Maps: "));
