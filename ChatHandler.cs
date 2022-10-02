@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NetworkMessages.FromServer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,6 +30,11 @@ namespace ChatCommands
         protected override void OnPlayerConnect(VirtualPlayer peer) {
             if (BanManager.IsPlayerBanned(peer)) {
                 DedicatedCustomServerSubModule.Instance.DedicatedCustomGameServer.KickPlayer(peer.Id, false);
+            }
+
+            if (AdminManager.PlayerIsAdmin(peer))
+            {
+                AdminManager.Admins.Add(peer.Id.ToString(), true);
             }
         }
 
