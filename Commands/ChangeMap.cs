@@ -164,8 +164,9 @@ namespace ChatCommands.Commands
             else if(foundMaps.Count == 0)
             {
                 GameNetwork.BeginModuleEventAsServer(networkPeer);
-                GameNetwork.WriteMessage(new ServerMessage("No maps found matchin '"+ searchString+"'"));
+                GameNetwork.WriteMessage(new ServerMessage("No maps found matching '"+ searchString+"'"));
                 GameNetwork.EndModuleEventAsServer();
+                return true;
             }
 
             // We need to save the state before ending the mission in case enable_automated_battle_switching is turned on
