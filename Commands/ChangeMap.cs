@@ -138,7 +138,7 @@ namespace ChatCommands.Commands
             // Check for special case where the name of a map sits inside the name of another map ie mp_tdm_map_001 + mp_tdm_map_001_spring
             foreach(string mapName in foundMaps)
             {
-                if(foundMaps.Equals(searchString))
+                if(mapName == searchString)
                 {
                     foundMaps.Clear();
                     foundMaps.Add(mapName);
