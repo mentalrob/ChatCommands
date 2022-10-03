@@ -38,6 +38,14 @@ namespace ChatCommands
             }
         }
 
+        protected override void OnPlayerDisconnect(VirtualPlayer peer)
+        {
+            if (AdminManager.PlayerIsAdmin(peer))
+            {
+                AdminManager.Admins.Remove(peer.Id.ToString());
+            }
+        }
+
         protected override void OnGameNetworkEnd()
         {
             base.OnGameNetworkEnd();

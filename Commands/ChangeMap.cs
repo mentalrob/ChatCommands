@@ -1,14 +1,6 @@
 ﻿using NetworkMessages.FromServer;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TaleWorlds.Core;
-using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
-using TaleWorlds.MountAndBlade.DedicatedCustomServer;
-using System.Threading;
 
 
 namespace ChatCommands.Commands
@@ -29,7 +21,7 @@ namespace ChatCommands.Commands
 
         public string Description()
         {
-            return "Changes the map. Use !maps to see available map IDs. !chagemaps <partial map id>";
+            return "Changes the map. Use !maps to see available map IDs. !chagemap <partial map id>";
         }
 
         public bool Execute(NetworkCommunicator networkPeer, string[] args)
@@ -47,7 +39,10 @@ namespace ChatCommands.Commands
             Tuple<bool, string> searchResult = AdminPanel.Instance.FindSingleMap(searchString);
 
             if(searchResult.Item1)
-            { 
+            {
+                GameNetwork.BeginModuleEventAsServer(networkPeer);
+                GameNetwork.WriteMessage(new ServerMessage("Changing map to " + searchResult.Item2));
+                GameNetwork.EndModuleEventAsServer();
                 AdminPanel.Instance.ChangeMap(searchResult.Item2);
             }
             else

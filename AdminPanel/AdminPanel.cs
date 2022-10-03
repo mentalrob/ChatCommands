@@ -184,6 +184,45 @@ namespace ChatCommands
             StartMission(currentState);
         }
 
+        public List<string> GetAllFactions()
+        {
+            return MultiplayerOptions.Instance.GetMultiplayerOptionsList(MultiplayerOptions.OptionType.CultureTeam1);
+        }
+
+        public List<string> FindMatchingFactions(string searchString)
+        {
+            List<string> availableFactions = GetAllFactions();
+
+            return availableFactions.Where(str => str.Contains(searchString)).ToList();
+        }
+
+        public Tuple<bool, string> FindSingleFaction(string searchString)
+        {
+            List<string> foundFactions = FindMatchingFactions(searchString);
+
+            if (foundFactions.Count == 1)
+            {
+                return new Tuple<bool, string>(true, foundFactions[0]);
+            }
+            else if (foundFactions.Count > 1)
+            {
+                return new Tuple<bool, string>(false, "More than one faction found matching '" + searchString + "'");
+            }
+            else
+            {
+                return new Tuple<bool, string>(false, "No factions found matching '" + searchString + "'");
+            }
+        }
+
+        public void ChangeMapAndFactions(string mapId, string faction1, string faction2)
+        {
+            MissionData currentState = getMultiplayerOptionsState();
+            currentState.mapId = mapId;
+            currentState.cultureTeam1 = faction1;
+            currentState.cultureTeam2 = faction2;
+            StartMission(currentState);
+        }
+
         public void SetMultiplayerOptions(MissionData missionData, MultiplayerOptions.MultiplayerOptionsAccessMode opetionSet = MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions)
         {
             MultiplayerOptions.Instance.GetOptionFromOptionType(MultiplayerOptions.OptionType.GameType, opetionSet).UpdateValue(missionData.gameType);

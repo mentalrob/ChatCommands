@@ -84,6 +84,8 @@
     <Compile Include="CommandManager.cs" />
     <Compile Include="AdminManager.cs" />
     <Compile Include="Commands\ChangeMap.cs" />
+    <Compile Include="Commands\ChangeMapFacs.cs" />
+    <Compile Include="Commands\Factions.cs" />
     <Compile Include="Commands\Maps.cs" />
     <Compile Include="Commands\Gold.cs" />
     <Compile Include="Commands\Ban.cs" />
