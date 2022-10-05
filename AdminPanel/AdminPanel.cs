@@ -8,6 +8,8 @@ using TaleWorlds.MountAndBlade.DedicatedCustomServer;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
+using TaleWorlds.MountAndBlade.Source.Missions;
+using NetworkMessages.FromServer;
 
 namespace ChatCommands
 {
@@ -31,7 +33,7 @@ namespace ChatCommands
 
             // Prevent infinite loop if for some reason a call to StartMission 
             AdminPanel.Instance.StartMissionOnly((MissionData)missionData);
-
+            AdminPanel.Instance.EndingCurrentMissionThenStartingNewMission = false;
         }
     }
 
@@ -108,6 +110,9 @@ namespace ChatCommands
                 return Mission.Current != null;
             }
         }
+
+        // Prevent multiple missions from being started at once
+        public bool EndingCurrentMissionThenStartingNewMission = false;
 
         string GetOptionString(MultiplayerOptions.OptionType optionType) 
         {
@@ -235,23 +240,27 @@ namespace ChatCommands
 
         public void StartMission(MissionData missionData)
         {
-
-            SetMultiplayerOptions(missionData);
-
-            if (!MissionIsRunning)
+            if(!EndingCurrentMissionThenStartingNewMission)
             {
-                DedicatedCustomServerSubModule.Instance.StartMission();
-            }
-            else
-            {
-                MissionListener listener = new MissionListener();
-                Mission.Current.AddListener(listener);
+                SetMultiplayerOptions(missionData);
 
-                MultiplayerIntermissionVotingManager.Instance.IsCultureVoteEnabled = false;
-                MultiplayerIntermissionVotingManager.Instance.IsMapVoteEnabled = false;
+                if (!MissionIsRunning)
+                {
+                    DedicatedCustomServerSubModule.Instance.StartMission();
+                }
+                else
+                {
+                    MissionListener listener = new MissionListener();
+                    Mission.Current.AddListener(listener);
 
-                listener.setMissionData(missionData);
-                DedicatedCustomServerSubModule.Instance.EndMission();
+                    MultiplayerIntermissionVotingManager.Instance.IsCultureVoteEnabled = false;
+                    MultiplayerIntermissionVotingManager.Instance.IsMapVoteEnabled = false;
+
+                    EndingCurrentMissionThenStartingNewMission = true;
+
+                    listener.setMissionData(missionData);
+                    DedicatedCustomServerSubModule.Instance.EndMission();
+                }
             }
         }
 
