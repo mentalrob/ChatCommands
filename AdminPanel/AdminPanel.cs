@@ -10,6 +10,7 @@ using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade.Source.Missions;
 using NetworkMessages.FromServer;
+using TaleWorlds.MountAndBlade.Network.Messages;
 
 namespace ChatCommands
 {
@@ -236,6 +237,20 @@ namespace ChatCommands
             MultiplayerOptions.Instance.GetOptionFromOptionType(MultiplayerOptions.OptionType.CultureTeam2, opetionSet).UpdateValue(missionData.cultureTeam2);
             MultiplayerIntermissionVotingManager.Instance.IsCultureVoteEnabled = missionData.cultureVote;
             MultiplayerIntermissionVotingManager.Instance.IsMapVoteEnabled = missionData.mapVote;
+            MultiplayerIntermissionVotingManager.Instance.ClearVotes();
+            MultiplayerIntermissionVotingManager.Instance.SetVotesOfCulture(missionData.cultureTeam1, 100);
+            MultiplayerIntermissionVotingManager.Instance.SetVotesOfCulture(missionData.cultureTeam2, 100);
+
+        }
+
+        private void SyncMultiplayerOptionsToClients()
+        {
+            GameNetwork.BeginBroadcastModuleEvent();
+            GameNetwork.WriteMessage((GameNetworkMessage)new MultiplayerOptionsInitial());
+            GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.IncludeUnsynchronizedClients, (NetworkCommunicator)null);
+            GameNetwork.BeginBroadcastModuleEvent();
+            GameNetwork.WriteMessage((GameNetworkMessage)new MultiplayerOptionsImmediate());
+            GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.IncludeUnsynchronizedClients, (NetworkCommunicator)null);
         }
 
         public void StartMission(MissionData missionData)
@@ -247,6 +262,7 @@ namespace ChatCommands
                 if (!MissionIsRunning)
                 {
                     DedicatedCustomServerSubModule.Instance.StartMission();
+                    SyncMultiplayerOptionsToClients();
                 }
                 else
                 {
@@ -271,6 +287,7 @@ namespace ChatCommands
             if (!MissionIsRunning)
             {
                 DedicatedCustomServerSubModule.Instance.StartMission();
+                SyncMultiplayerOptionsToClients();
                 return true;
             }
 
