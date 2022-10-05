@@ -220,6 +220,89 @@ namespace ChatCommands
             }
         }
 
+        public List<string> GetGameTypes()
+        {
+            return MultiplayerOptions.Instance.GetMultiplayerOptionsList(MultiplayerOptions.OptionType.GameType);
+        }
+
+        private List<string> GetMatchingGameTypes(string searchString)
+        {
+            List<string> availableGameTypes = GetGameTypes();
+
+            return availableGameTypes.Where(str => str.Contains(searchString)).ToList();
+        }
+
+        public Tuple<bool, string> FindSingleGameType(string searchString)
+        {
+            List<string> foundGameTypes = GetMatchingGameTypes(searchString);
+
+            if (foundGameTypes.Count == 1)
+            {
+                return new Tuple<bool, string>(true, foundGameTypes[0]);
+            }
+            else if (foundGameTypes.Count > 1)
+            {
+                return new Tuple<bool, string>(false, "More than one game type found matching '" + searchString + "'");
+            }
+            else
+            {
+                return new Tuple<bool, string>(false, "No game types found matching '" + searchString + "'");
+            }
+        }
+
+        public List<string> GetMapsForGameType(string searchString)
+        {
+
+            Tuple<bool, string> gameTypeSearch = FindSingleGameType(searchString);
+            if(gameTypeSearch.Item1)
+            {
+                return MultiplayerGameTypes.GetGameTypeInfo(gameTypeSearch.Item2).Scenes.ToList();
+            }
+            return new List<string>();
+        }
+ 
+        
+
+        public Tuple<bool,string> FindMapForGameType(string gameType, string searchString)
+        {
+            List<string> foundMaps = GetMapsForGameType(gameType);
+
+            List<string> filtered = foundMaps.Where(str => str.Contains(searchString)).ToList(); ;
+
+            if (filtered.Count == 1)
+            {
+                return new Tuple<bool, string>(true, filtered[0]);
+            }
+            else if (filtered.Count > 1)
+            {
+                // Check for special case where the name of a map sits inside the name of another map ie mp_tdm_map_001 or mp_tdm_map_001_spring
+                foreach (string mapName in filtered)
+                {
+                    if (mapName == searchString)
+                    {
+                        return new Tuple<bool, string>(true, mapName);
+                    }
+                }
+
+                return new Tuple<bool, string>(false, "More than one map found matching '" + searchString + "'");
+            }
+            else
+            {
+                return new Tuple<bool, string>(false, "No maps found matching '" + searchString + "'");
+            }
+        }
+
+        // NOTE: Does not verify if the current map matches the game type!
+        public void ChangeGameTypeMapFactions(string gameType, string mapId, string faction1, string faction2)
+        {
+            MissionData currentState = getMultiplayerOptionsState();
+            currentState.gameType = gameType;
+            currentState.mapId = mapId;
+            currentState.cultureTeam1 = faction1;
+            currentState.cultureTeam2 = faction2;
+            StartMission(currentState);
+        }
+
         public void ChangeMapAndFactions(string mapId, string faction1, string faction2)
         {
             MissionData currentState = getMultiplayerOptionsState();

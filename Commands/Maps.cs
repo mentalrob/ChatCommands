@@ -30,12 +30,21 @@ namespace ChatCommands.Commands
 
         public string Description()
         {
-            return "Lists available maps. !maps";
+            return "Lists available maps for the currnet, or a different, game type. !maps <game type>";
         }
 
         public bool Execute(NetworkCommunicator networkPeer, string[] args)
         {
-            List<string> availableMaps = AdminPanel.Instance.GetAllAvailableMaps();
+            List<string> availableMaps = new List<string>();
+
+            if(args.Length == 1)
+            {
+                availableMaps = AdminPanel.Instance.GetMapsForGameType(args[0]);
+            }
+            else
+            {
+                availableMaps = AdminPanel.Instance.GetAllAvailableMaps();
+            }
 
             GameNetwork.BeginModuleEventAsServer(networkPeer);
             GameNetwork.WriteMessage(new ServerMessage("Maps: "));

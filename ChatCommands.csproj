@@ -87,6 +87,7 @@
     <Compile Include="ChatHandler.cs" />
     <Compile Include="CommandManager.cs" />
     <Compile Include="AdminManager.cs" />
+    <Compile Include="Commands\ChangeMission.cs" />
     <Compile Include="Commands\ChangeMap.cs" />
     <Compile Include="Commands\ChangeMapFacs.cs" />
     <Compile Include="Commands\Factions.cs" />
