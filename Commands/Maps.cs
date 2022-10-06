@@ -30,7 +30,7 @@ namespace ChatCommands.Commands
 
         public string Description()
         {
-            return "Lists available maps for the currnet, or a different, game type. !maps <game type>";
+            return "Lists available maps for the current, or a different, game type. !maps <game type>";
         }
 
         public bool Execute(NetworkCommunicator networkPeer, string[] args)
