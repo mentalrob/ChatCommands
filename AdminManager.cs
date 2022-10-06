@@ -13,13 +13,16 @@ namespace ChatCommands
 
         public static bool PlayerIsAdmin(VirtualPlayer peer)
         {
-            foreach (var adminInfo in ConfigManager.GetConfig().Admins)
+            if(ConfigManager.GetConfig().Admins != null)
             {
-                string currentId = adminInfo.Split('|')[1];
-                if(peer.Id.ToString() == currentId)
+                foreach (var adminInfo in ConfigManager.GetConfig().Admins)
                 {
-                    return true;
-                }    
+                    string currentId = adminInfo.Split('|')[1];
+                    if (peer.Id.ToString() == currentId)
+                    {
+                        return true;
+                    }
+                }
             }
 
             return false;
