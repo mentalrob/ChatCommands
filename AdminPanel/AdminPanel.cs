@@ -87,6 +87,7 @@ namespace ChatCommands
         }
     }
 
+    // TODO: A lot of the find/search functions are all the same. See if we can refactor that down a bit
     public class AdminPanel
     {
 

@@ -66,6 +66,10 @@ While in the server you can open up the chat and type `!help` command to see wha
 - `!kill` Kills a provided username. Usage `!kill <Player Name>`
 - `!tp` Teleport yourself to another. Usage `!tp <Target User>`
 - `!unban` Unbans a player. Usage `!unban <Player Name>`
+- `!maps` Lists available maps for the currnet, or a different, game type. `!maps <game type>`
+- `!changemap` Changes the map. Use !maps to see available map IDs. `!chagemap <map id>`
+- `!mapfacs` Changes the map and the team factions. `!chagemapfacs <map id> <team1 faction> <team2 faction>`
+- `!mission` Changes the game type, map, and factions. `!mission <game type> <map id> <team1 faction> <team2 faction>`
 
 Login password is randomly generated, you can find the password under `bin/Win64_ServerShipping/chatCommands.json` and banlist is also in the same folder.
 
