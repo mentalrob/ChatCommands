@@ -11,14 +11,14 @@ namespace ChatCommands
     {
         public static Dictionary<string, bool> Admins = new Dictionary<string, bool>();
 
-        public static bool PlayerIsAdmin(VirtualPlayer peer)
+        public static bool PlayerIsAdmin(string peerId)
         {
             if(ConfigManager.GetConfig().Admins != null)
             {
                 foreach (var adminInfo in ConfigManager.GetConfig().Admins)
                 {
                     string currentId = adminInfo.Split('|')[1];
-                    if (peer.Id.ToString() == currentId)
+                    if (peerId == currentId)
                     {
                         return true;
                     }

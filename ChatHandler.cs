@@ -32,7 +32,7 @@ namespace ChatCommands
                 DedicatedCustomServerSubModule.Instance.DedicatedCustomGameServer.KickPlayer(peer.Id, false);
             }
 
-            if (AdminManager.PlayerIsAdmin(peer))
+            if (AdminManager.PlayerIsAdmin(peer.Id.ToString()))
             {
                 AdminManager.Admins.Add(peer.Id.ToString(), true);
             }
@@ -40,7 +40,7 @@ namespace ChatCommands
 
         protected override void OnPlayerDisconnect(VirtualPlayer peer)
         {
-            if (AdminManager.PlayerIsAdmin(peer))
+            if (AdminManager.PlayerIsAdmin(peer.Id.ToString()))
             {
                 AdminManager.Admins.Remove(peer.Id.ToString());
             }

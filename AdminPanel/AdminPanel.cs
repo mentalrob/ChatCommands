@@ -257,7 +257,7 @@ namespace ChatCommands
             Tuple<bool, string> gameTypeSearch = FindSingleGameType(searchString);
             if(gameTypeSearch.Item1)
             {
-                return MultiplayerGameTypes.GetGameTypeInfo(gameTypeSearch.Item2).Scenes.ToList();
+                return MultiplayerGameTypes.GetGameTypeInfo(gameTypeSearch.Item2).Scenes.ToList().Union(GetMapsInPool()).ToList();
             }
             return new List<string>();
         }
@@ -388,5 +388,10 @@ namespace ChatCommands
             return false;
         }
 
+        public void SetBots(int team1, int team2)
+        {
+            MultiplayerOptions.Instance.GetOptionFromOptionType(MultiplayerOptions.OptionType.NumberOfBotsTeam1 ).UpdateValue(team1);
+            MultiplayerOptions.Instance.GetOptionFromOptionType(MultiplayerOptions.OptionType.NumberOfBotsTeam2 ).UpdateValue(team2);
+        }
     }
 }
