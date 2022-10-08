@@ -40,6 +40,7 @@ namespace ChatCommands
 
         protected override void OnPlayerDisconnect(VirtualPlayer peer)
         {
+            
             if (AdminManager.PlayerIsAdmin(peer.Id.ToString()))
             {
                 AdminManager.Admins.Remove(peer.Id.ToString());
