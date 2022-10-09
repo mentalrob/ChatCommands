@@ -41,6 +41,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Reflection, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Reflection.4.3.0\lib\net462\System.Reflection.dll</HintPath>
       <Private>True</Private>
@@ -91,6 +92,7 @@
     <Compile Include="Commands\ChangeMission.cs" />
     <Compile Include="Commands\ChangeMap.cs" />
     <Compile Include="Commands\ChangeMapFacs.cs" />
+    <Compile Include="Commands\Equip.cs" />
     <Compile Include="Commands\Factions.cs" />
     <Compile Include="Commands\id.cs" />
     <Compile Include="Commands\Maps.cs" />
