@@ -257,11 +257,10 @@ namespace ChatCommands
             Tuple<bool, string> gameTypeSearch = FindSingleGameType(searchString);
             if(gameTypeSearch.Item1)
             {
-                return MultiplayerGameTypes.GetGameTypeInfo(gameTypeSearch.Item2).Scenes.ToList();
+                return MultiplayerGameTypes.GetGameTypeInfo(gameTypeSearch.Item2).Scenes.ToList().Union(GetMapsInPool()).ToList();
             }
             return new List<string>();
         }
- 
         
 
         public Tuple<bool,string> FindMapForGameType(string gameType, string searchString)
@@ -337,41 +336,48 @@ namespace ChatCommands
             GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.IncludeUnsynchronizedClients, (NetworkCommunicator)null);
         }
 
+        private void ResetFactionVoteCount()
+        {
+            MultiplayerIntermissionVotingManager.Instance.ClearVotes();
+        }
+
         public void StartMission(MissionData missionData)
         {
             if(!EndingCurrentMissionThenStartingNewMission)
             {
-                SetMultiplayerOptions(missionData);
-
                 if (!MissionIsRunning)
                 {
-                    DedicatedCustomServerSubModule.Instance.StartMission();
-                    SyncMultiplayerOptionsToClients();
+                    StartMissionOnly(missionData);
                 }
                 else
                 {
-                    MissionListener listener = new MissionListener();
-                    Mission.Current.AddListener(listener);
-
-                    MultiplayerIntermissionVotingManager.Instance.IsCultureVoteEnabled = false;
-                    MultiplayerIntermissionVotingManager.Instance.IsMapVoteEnabled = false;
-
-                    EndingCurrentMissionThenStartingNewMission = true;
-
-                    listener.setMissionData(missionData);
-                    DedicatedCustomServerSubModule.Instance.EndMission();
+                    EndMissionThenStartMission(missionData);
                 }
             }
         }
 
+        private void EndMissionThenStartMission(MissionData missionData)
+        {
+            MissionListener listener = new MissionListener();
+            Mission.Current.AddListener(listener);
+
+            MultiplayerIntermissionVotingManager.Instance.IsCultureVoteEnabled = false;
+            MultiplayerIntermissionVotingManager.Instance.IsMapVoteEnabled = false;
+
+            EndingCurrentMissionThenStartingNewMission = true;
+
+            listener.setMissionData(missionData);
+            DedicatedCustomServerSubModule.Instance.EndMission();
+        }
+
         public bool StartMissionOnly(MissionData missionData)
         {
-            SetMultiplayerOptions(missionData);
-
             if (!MissionIsRunning)
             {
+                SetMultiplayerOptions(missionData);
                 DedicatedCustomServerSubModule.Instance.StartMission();
                 SyncMultiplayerOptionsToClients();
+                ResetFactionVoteCount();
                 return true;
             }
 
@@ -388,5 +394,10 @@ namespace ChatCommands
             return false;
         }
 
+        public void SetBots(int team1, int team2)
+        {
+            MultiplayerOptions.Instance.GetOptionFromOptionType(MultiplayerOptions.OptionType.NumberOfBotsTeam1 ).UpdateValue(team1);
+            MultiplayerOptions.Instance.GetOptionFromOptionType(MultiplayerOptions.OptionType.NumberOfBotsTeam2 ).UpdateValue(team2);
+        }
     }
 }
