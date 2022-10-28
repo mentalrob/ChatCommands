@@ -2,9 +2,11 @@
 
 Chat commands is a server side mod that allow players to use chat commands
 
-# Requirements
+# Requirements For Development
 
 - Harmony for .NET Framework 4.7.2
+
+`0Harmony.dll is located in release file, If you are not going to make development you can ignore this requirement.`
 
 ## Installation
 
