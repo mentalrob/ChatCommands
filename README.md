@@ -137,3 +137,7 @@ If you want to contribute you can, if you want me to implement a command, please
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
+
+# Thanks to
+- Horns
+- Falcomfr
