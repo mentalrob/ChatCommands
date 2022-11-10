@@ -58,7 +58,6 @@ namespace ChatCommands.Commands
             GameNetwork.BeginModuleEventAsServer(networkPeer);
             GameNetwork.WriteMessage(new ServerMessage("Player " + targetPeer.UserName + " is kicked from the server"));
             GameNetwork.EndModuleEventAsServer();
-
             DedicatedCustomServerSubModule.Instance.DedicatedCustomGameServer.KickPlayer(targetPeer.VirtualPlayer.Id, false);
             return true;
         }

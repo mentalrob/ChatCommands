@@ -31,7 +31,8 @@ namespace ChatCommands.Commands
 
         public bool Execute(NetworkCommunicator networkPeer, string[] args)
         {
-            if (args.Length == 0) {
+            if (args.Length == 0)
+            {
                 GameNetwork.BeginModuleEventAsServer(networkPeer);
                 GameNetwork.WriteMessage(new ServerMessage("Please provide a username. Player that contains provided input will be banned"));
                 GameNetwork.EndModuleEventAsServer();
@@ -39,24 +40,26 @@ namespace ChatCommands.Commands
             }
 
             NetworkCommunicator targetPeer = null;
-            foreach (NetworkCommunicator peer in GameNetwork.NetworkPeers) {
-                if(peer.UserName.Contains(string.Join(" ", args))) {
+            foreach (NetworkCommunicator peer in GameNetwork.NetworkPeers)
+            {
+                if (peer.UserName.Contains(string.Join(" ", args)))
+                {
                     targetPeer = peer;
                     break;
                 }
             }
-            if (targetPeer == null) {
+            if (targetPeer == null)
+            {
                 GameNetwork.BeginModuleEventAsServer(networkPeer);
                 GameNetwork.WriteMessage(new ServerMessage("Target player not found"));
                 GameNetwork.EndModuleEventAsServer();
                 return true;
             }
-            
+
             using (StreamWriter sw = File.AppendText(BanManager.BanListPath()))
             {
                 sw.WriteLine(targetPeer.UserName + "|" + targetPeer.VirtualPlayer.Id.ToString());
             }
-
             GameNetwork.BeginModuleEventAsServer(networkPeer);
             GameNetwork.WriteMessage(new ServerMessage("Player " + targetPeer.UserName + " is banned from the server"));
             GameNetwork.EndModuleEventAsServer();
