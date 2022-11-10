@@ -74,6 +74,9 @@ While in the server you can open up the chat and type `!help` command to see wha
 - `!mission` Changes the game type, map, and factions. `!mission <game type> <map id> <team1 faction> <team2 faction>`
 - `!bots` Changes the number of bots for each factions. `!bots <team1 bots> <team2 bots>`
 - `!id` Returns your unique ID `!id`
+- `!healme` Healing yourself `!healme`
+- `!heal` Healing a player `!heal <Player Name>`
+- `!healall` Heal all players `!healall`
 
 Login password is randomly generated, you can find the password under `bin/Win64_ServerShipping/chatCommands.json` and banlist is also in the same folder. 
 
