@@ -26,7 +26,7 @@ namespace ChatCommands.Commands
         {
             foreach (NetworkCommunicator peer in GameNetwork.NetworkPeers)
             {
-                if(peer.ControlledAgent != null)
+                if (peer.ControlledAgent != null)
                 {
                     peer.ControlledAgent.Health = peer.ControlledAgent.HealthLimit;
                     GameNetwork.BeginModuleEventAsServer(peer);
