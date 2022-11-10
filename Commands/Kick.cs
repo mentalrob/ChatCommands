@@ -55,15 +55,9 @@ namespace ChatCommands.Commands
                 return true;
             }
 
-            foreach (NetworkCommunicator peer2 in GameNetwork.NetworkPeers)
-            {
-                if (peer2.ControlledAgent != null)
-                {
-                    GameNetwork.BeginModuleEventAsServer(peer2);
-                    GameNetwork.WriteMessage(new ServerMessage("Player " + targetPeer.UserName + " is kicked from the server"));
-                    GameNetwork.EndModuleEventAsServer();
-                }
-            }
+            GameNetwork.BeginModuleEventAsServer(networkPeer);
+            GameNetwork.WriteMessage(new ServerMessage("Player " + targetPeer.UserName + " is kicked from the server"));
+            GameNetwork.EndModuleEventAsServer();
 
             DedicatedCustomServerSubModule.Instance.DedicatedCustomGameServer.KickPlayer(targetPeer.VirtualPlayer.Id, false);
             return true;
