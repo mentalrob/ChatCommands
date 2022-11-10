@@ -59,7 +59,7 @@ namespace ChatCommands.Commands
             {
                 if (peer2.ControlledAgent != null)
                 {
-                    GameNetwork.BeginModuleEventAsServer(peer2);
+                    GameNetwork.BeginBroadcastModuleEvent();
                     GameNetwork.WriteMessage(new ServerMessage("Player " + targetPeer.UserName + " is kicked from the server"));
                     GameNetwork.EndModuleEventAsServer();
                 }
