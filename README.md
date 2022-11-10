@@ -67,6 +67,7 @@ While in the server you can open up the chat and type `!help` command to see wha
 - `!kick` Kicks a player. Caution ! First user that contains the provided input will be kicked. Usage `!kick <Player Name>`
 - `!kill` Kills a provided username. Usage `!kill <Player Name>`
 - `!tp` Teleport yourself to another. Usage `!tp <Target User>`
+- `!tptome` Teleport player to you. Usage `!tptome <Target User>`
 - `!unban` Unbans a player. Usage `!unban <Player Name>`
 - `!maps` Lists available maps for the current, or a different, game type. `!maps <game type>`
 - `!changemap` Changes the map. Use !maps to see available map IDs. `!chagemap <map id>`
