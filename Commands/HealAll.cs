@@ -29,11 +29,11 @@ namespace ChatCommands.Commands
                 if (peer.ControlledAgent != null)
                 {
                     peer.ControlledAgent.Health = peer.ControlledAgent.HealthLimit;
-                    GameNetwork.BeginModuleEventAsServer(peer);
-                    GameNetwork.WriteMessage(new ServerMessage("Players are heal"));
-                    GameNetwork.EndModuleEventAsServer();
                 }
             }
+            GameNetwork.BeginBroadcastModuleEvent();
+            GameNetwork.WriteMessage(new ServerMessage("Players are heal"));
+            GameNetwork.EndModuleEventAsServer();
             return true;
         }
     }

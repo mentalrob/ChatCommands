@@ -1,9 +1,4 @@
 ﻿using NetworkMessages.FromServer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.DedicatedCustomServer;
 
@@ -55,15 +50,10 @@ namespace ChatCommands.Commands
                 return true;
             }
 
-            foreach (NetworkCommunicator peer2 in GameNetwork.NetworkPeers)
-            {
-                if (peer2.ControlledAgent != null)
-                {
-                    GameNetwork.BeginBroadcastModuleEvent();
-                    GameNetwork.WriteMessage(new ServerMessage("Player " + targetPeer.UserName + " is kicked from the server"));
-                    GameNetwork.EndModuleEventAsServer();
-                }
-            }
+            GameNetwork.BeginBroadcastModuleEvent();
+            GameNetwork.WriteMessage(new ServerMessage("Player " + targetPeer.UserName + " is kicked from the server"));
+            GameNetwork.EndModuleEventAsServer();
+
             DedicatedCustomServerSubModule.Instance.DedicatedCustomGameServer.KickPlayer(targetPeer.VirtualPlayer.Id, false);
             return true;
         }
