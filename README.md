@@ -67,6 +67,7 @@ While in the server you can open up the chat and type `!help` command to see wha
 - `!kick` Kicks a player. Caution ! First user that contains the provided input will be kicked. Usage `!kick <Player Name>`
 - `!kill` Kills a provided username. Usage `!kill <Player Name>`
 - `!tp` Teleport yourself to another. Usage `!tp <Target User>`
+- `!tptome` Teleport player to you. Usage `!tptome <Target User>`
 - `!unban` Unbans a player. Usage `!unban <Player Name>`
 - `!maps` Lists available maps for the current, or a different, game type. `!maps <game type>`
 - `!changemap` Changes the map. Use !maps to see available map IDs. `!chagemap <map id>`
@@ -74,6 +75,9 @@ While in the server you can open up the chat and type `!help` command to see wha
 - `!mission` Changes the game type, map, and factions. `!mission <game type> <map id> <team1 faction> <team2 faction>`
 - `!bots` Changes the number of bots for each factions. `!bots <team1 bots> <team2 bots>`
 - `!id` Returns your unique ID `!id`
+- `!healme` Healing yourself `!healme`
+- `!heal` Healing a player `!heal <Player Name>`
+- `!healall` Heal all players `!healall`
 
 Login password is randomly generated, you can find the password under `bin/Win64_ServerShipping/chatCommands.json` and banlist is also in the same folder. 
 
@@ -133,3 +137,7 @@ If you want to contribute you can, if you want me to implement a command, please
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
+
+# Thanks to
+- Horns
+- Falcomfr
