@@ -53,7 +53,7 @@ namespace ChatCommands.Commands
             }
             GameNetwork.BeginBroadcastModuleEvent();
             GameNetwork.WriteMessage(new ServerMessage("Player " + targetPeer.UserName + " is banned from the server"));
-            GameNetwork.EndModuleEventAsServer();
+            GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
             DedicatedCustomServerSubModule.Instance.DedicatedCustomGameServer.KickPlayer(targetPeer.VirtualPlayer.Id, false);
             return true;
             // throw new NotImplementedException();

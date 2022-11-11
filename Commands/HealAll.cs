@@ -33,7 +33,7 @@ namespace ChatCommands.Commands
             }
             GameNetwork.BeginBroadcastModuleEvent();
             GameNetwork.WriteMessage(new ServerMessage("Players are heal"));
-            GameNetwork.EndModuleEventAsServer();
+            GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
             return true;
         }
     }

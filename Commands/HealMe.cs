@@ -1,4 +1,5 @@
-﻿using TaleWorlds.MountAndBlade;
+﻿using NetworkMessages.FromServer;
+using TaleWorlds.MountAndBlade;
 
 namespace ChatCommands.Commands
 {
