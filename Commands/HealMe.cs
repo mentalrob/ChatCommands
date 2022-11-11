@@ -1,4 +1,5 @@
-﻿using TaleWorlds.MountAndBlade;
+﻿using NetworkMessages.FromServer;
+using TaleWorlds.MountAndBlade;
 
 namespace ChatCommands.Commands
 {
@@ -28,6 +29,9 @@ namespace ChatCommands.Commands
                 networkPeer.ControlledAgent.Health = networkPeer.ControlledAgent.HealthLimit;
 
             }
+            GameNetwork.BeginModuleEventAsServer(networkPeer);
+            GameNetwork.WriteMessage(new ServerMessage("Healing yourself"));
+            GameNetwork.EndModuleEventAsServer();
             return true;
         }
     }

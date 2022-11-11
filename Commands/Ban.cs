@@ -1,10 +1,5 @@
 ﻿using NetworkMessages.FromServer;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.DedicatedCustomServer;
 
@@ -56,9 +51,9 @@ namespace ChatCommands.Commands
             {
                 sw.WriteLine(targetPeer.UserName + "|" + targetPeer.VirtualPlayer.Id.ToString());
             }
-            GameNetwork.BeginModuleEventAsServer(networkPeer);
+            GameNetwork.BeginBroadcastModuleEvent();
             GameNetwork.WriteMessage(new ServerMessage("Player " + targetPeer.UserName + " is banned from the server"));
-            GameNetwork.EndModuleEventAsServer();
+            GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
             DedicatedCustomServerSubModule.Instance.DedicatedCustomGameServer.KickPlayer(targetPeer.VirtualPlayer.Id, false);
             return true;
             // throw new NotImplementedException();
